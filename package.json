@@ -4,8 +4,8 @@
   "main": "dist/main.js",
   "license": "MIT",
   "scripts": {
-    "build": "rollup --config",
-    "watch": "rollup --config --watch",
+    "build": "rm dist -rf && rollup --config",
+    "watch": "rm dist -rf && rollup --config --watch",
     "cover": "jest --coverage",
     "test": "jest",
     "watch-test": "jest --watch"

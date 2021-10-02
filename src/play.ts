@@ -23,8 +23,12 @@ export default class Play {
   }
 
 
-  draw = (x: number, y: number) => {
-    this.elements.push(Rectangle.unit.translate(x, y))
+  draw = (x: number, y: number, w: number, h: number) => {
+    this.elements.push(
+      Rectangle.unit.transform(
+        Matrix.unit
+        .scale(w, h)
+        .translate(x, y)))
   }
 
   flush = () => {
@@ -36,7 +40,7 @@ export default class Play {
 
     this.elements.forEach((element, i) => {
 
-      
+     console.log(element) 
       
     })
 

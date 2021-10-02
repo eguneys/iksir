@@ -1,3 +1,4 @@
+import Matrix from './matrix'
 import Vec2 from './vec2'
 
 
@@ -16,10 +17,8 @@ export default class Rectangle {
       Vec2.make(x, y),
       Vec2.make(x, y + h),
       Vec2.make(x + w, y + h),
-      Vec2.make(x + w, 0)
+      Vec2.make(x + w, y)
     ])
-
-  readonly vertices: Array<Vec2>
 
   get x1() { return this.vertices[0].x }
   get y1() { return this.vertices[0].y }
@@ -33,7 +32,6 @@ export default class Rectangle {
 
   constructor(readonly vertices: Array<Vec2>) {
   }
-
 
   transform(m: Matrix): Rectangle {
     return new Rectangle(this.vertices.map(_ => m.mVec2(_)))

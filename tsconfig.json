@@ -6,5 +6,8 @@
     "emitDeclarationOnly": true,
     "isolatedModules": true,
     "outDir": "dist"
-  }
+  },
+  "exclude": [
+    "test"
+  ]
 }
