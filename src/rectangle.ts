@@ -30,6 +30,16 @@ export default class Rectangle {
   get w() { return this.x2 - this.x1 }
   get h() { return this.y2 - this.y1 }
 
+  get vertexData(): Float32Array {
+    return new Float32Array(
+      this.vertices.flatMap(_ =>
+      _.vs))
+  }
+
+  get indices(): Uint16Array {
+    return new Uint16Array([0, 1, 2, 0, 2, 3])
+  }
+
   constructor(readonly vertices: Array<Vec2>) {
   }
 

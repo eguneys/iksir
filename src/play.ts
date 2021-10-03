@@ -35,14 +35,25 @@ export default class Play {
     let { gl } = this 
 
 
-    let attributeBuffer = new Float32Array(4 * 4)
-    let indexBuffer = new Uint16Array(4)
+    let attributeBuffer = new Float32Array(4 * 4 * 2),
+      indexBuffer = new Uint16Array(4 * 6)
 
     this.elements.forEach((element, i) => {
-
-     console.log(element) 
       
+      let {
+        vertexData,
+        indices } = element
+
+      for (let k = 0; k < vertexData.length; k++) {
+        attributeBuffer[i * vertexData.length + k] = vertexData[k]
+      }
+
+      for (let k = 0; k < indices.length; k++) {
+        indexBuffer[i * indices.length + k] = i * 4 + indices[k]
+      }
     })
+
+    console.log(attributeBuffer, indexBuffer)
 
 
     gl.viewport(0, 0, 320, 180)
@@ -50,40 +61,38 @@ export default class Play {
     gl.clear(this.gl.COLOR_BUFFER_BIT)
 
     let vao = gl.createVertexArray()
-
+ 
     gl.bindVertexArray(vao)
-
-
+ 
+ 
     let gl_abuffer = gl.createBuffer()
-
+ 
     gl.bindBuffer(gl.ARRAY_BUFFER, gl_abuffer)
-
-
+ 
+ 
     let gl_ibuffer = gl.createBuffer()
-
+ 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl_ibuffer)
-
+ 
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexBuffer, gl.STATIC_DRAW)
-
+ 
     let program = generateProgram(gl, vSource, fSource)
-
+ 
     gl.useProgram(program.program)
     gl.uniformMatrix3fv(program.uniformData['projectionMatrix'].location, false, this.projectionMatrix.array_t) 
-
-
+ 
+ 
     gl.bindBuffer(gl.ARRAY_BUFFER, gl_abuffer)
     gl.bufferData(gl.ARRAY_BUFFER, attributeBuffer, gl.STATIC_DRAW)
-
-    indexBuffer = new Uint16Array([0, 1, 2])
+ 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl_ibuffer)
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexBuffer, gl.STATIC_DRAW)
-
+ 
     gl.enableVertexAttribArray(0)
-
-    gl.vertexAttribPointer(0, 2, gl.UNSIGNED_SHORT, false, 0, 0) 
-
-
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_SHORT, 0) 
+ 
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0) 
+ 
+    gl.drawElements(gl.TRIANGLES, indexBuffer.length, gl.UNSIGNED_SHORT, 0) 
 
 
     this.elements = []
