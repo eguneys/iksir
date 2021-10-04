@@ -9,7 +9,7 @@ export default class Matrix {
 
   static projection = (width: number, height: number) => {
     let b = 0,
-      c = 0
+      c = 0 
 
     let a = 1 / width * 2,
       d = -1 / height * 2,
@@ -36,6 +36,21 @@ export default class Matrix {
       c, d, 0,
       tx, ty, 1
     ])
+  }
+
+  rotate(r: number): Matrix {
+
+    let cosa = Math.cos(r),
+      sina = Math.sin(r)
+
+    let a = cosa * this.a - sina * this.b,
+      b = sina * this.a + cosa * this.b,
+      c = cosa * this.c - sina * this.d,
+      d = sina * this.c + cosa * this.d,
+      tx = cosa * this.tx - sina * this.ty,
+      ty = sina * this.tx + cosa * this.ty
+
+    return new Matrix(a, b, c, d, tx, ty)
   }
 
   scale(x: number, y: number): Matrix {
