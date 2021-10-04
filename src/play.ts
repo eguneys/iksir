@@ -37,11 +37,11 @@ export default class Play {
     this.elements.push(
       Rectangle.unit.transform(
         Matrix.unit
-        .scale(10, 10)
+        .scale(quad.tw, quad.th)
         .scale(sx, sy)
-        .translate(-sx * 5, -sy * 5)
+        .translate(-sx * quad.tw * 0.5, -sy * quad.th * 0.5)
         .rotate(r)
-        .translate(sx * 5, sy * 5)
+        .translate(sx * quad.tw * 0.5, sy * quad.th * 0.5)
         .translate(x, y))
 
     )
@@ -57,7 +57,7 @@ export default class Play {
         vertexData,
         indices } = element
 
-      let { fsUv } = this.quads[i]
+      let { texture, fsUv } = this.quads[i]
 
       for (let k = 0; k < vertexData.length; k+=2) {
         attributeBuffer[aIndex++] = vertexData[k]
@@ -95,7 +95,11 @@ export default class Play {
     let program = generateProgram(gl, vSource, fSource)
  
     gl.useProgram(program.program)
+
+
     gl.uniformMatrix3fv(program.uniformData['projectionMatrix'].location, false, this.projectionMatrix.array_t) 
+   
+    gl.uniform1i(program.uniformData['uSampler'].location, 0)
  
  
     gl.bindBuffer(gl.ARRAY_BUFFER, gl_abuffer)
@@ -129,6 +133,19 @@ export default class Play {
       gl.UNSIGNED_BYTE,
     new Uint8Array([0, 0, 255, 255]))
 
+
+    let texture = this.quads[0].texture
+
+    gl.bindTexture(gl.TEXTURE_2D, glTexture)
+    gl.texImage2D(gl.TEXTURE_2D, 0,
+      gl.RGBA, texture.width, texture.height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+      texture)
+
+    //gl.generateMipmap(gl.TEXTURE_2D)
+
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
 
     gl.drawElements(gl.TRIANGLES, indexBuffer.length, gl.UNSIGNED_SHORT, 0) 
 

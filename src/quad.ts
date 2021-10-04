@@ -20,11 +20,11 @@ export default class Quad {
   get x0(): number { return this.frame.x }
   get y0(): number { return this.frame.y }
 
-  get x1(): number { return this.frame.x1 }
+  get x1(): number { return this.frame.x2 }
   get y1(): number { return this.y0 }
 
   get x2(): number { return this.x1 }
-  get y2(): number { return this.frame.y1 }
+  get y2(): number { return this.frame.y2 }
 
   get x3(): number { return this.x0 }
   get y3(): number { return this.y2 }
@@ -39,7 +39,7 @@ export default class Quad {
     this.frame = _frame.transform(
       Matrix.unit.scale(1/this.tw,
       1/this.th))
-
+    
     this.fsUv = new Float32Array([
       this.x0,
       this.y0,
@@ -50,6 +50,7 @@ export default class Quad {
       this.x3,
       this.y3,
     ])
+   
   }
   
 }
