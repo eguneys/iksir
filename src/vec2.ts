@@ -14,4 +14,8 @@ export default class Vec2 {
     readonly y: number) {
 
   }
+
+  addy(n: number) {
+    return Vec2.make(this.x, this.y + n)
+  }
 }
