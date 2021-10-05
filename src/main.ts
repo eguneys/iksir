@@ -15,3 +15,5 @@ export default function Iksir(element: HTMLElement) {
 
 export { default as Play } from './play'
 export { default as Quad } from './quad'
+export { default as Vec2 } from './vec2'
+export { default as Pos } from './vec2'

@@ -17,6 +17,9 @@ export default class Quad {
   readonly th: number
   readonly frame: Rectangle
 
+  get w(): number { return this._frame.w }
+  get h(): number { return this._frame.h }
+
   get x0(): number { return this.frame.x }
   get y0(): number { return this.frame.y }
 

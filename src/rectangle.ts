@@ -7,9 +7,9 @@ export default class Rectangle {
 
   static unit = new Rectangle([
     Vec2.make(0, 0),
-    Vec2.make(0, 1),
+    Vec2.make(1, 0),
     Vec2.make(1, 1),
-    Vec2.make(1, 0)
+    Vec2.make(0, 1)
   ])
 
   static make = (x: number, y: number,

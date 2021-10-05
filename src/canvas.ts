@@ -6,7 +6,7 @@ export default class Canvas {
 
   $canvas: HTMLCanvasElement
 
-  gl!: WebGL2RenderingContext
+  gl?: WebGL2RenderingContext
 
   constructor(readonly $wrap: HTMLElement) {
 
@@ -17,10 +17,25 @@ export default class Canvas {
 
     $wrap.appendChild(this.$canvas)
 
-    let gl = this.$canvas.getContext('webgl2', { antialias: false });
+    let gl = this.$canvas.getContext('webgl2', { alpha: true, antialias: false });
     if (gl !== null) {
       this.gl = gl
     }
+
+    this.$canvas.addEventListener('webglcontextlost', (event) => {
+      console.log('context lost')
+      event.preventDefault()
+      this.gl = undefined
+    })
+
+
+    this.$canvas.addEventListener('webglcontextrestored', () => {
+      console.log('restored')
+      if (gl !== null) {
+        this.gl = gl
+      }
+    })
+
   } 
 
 

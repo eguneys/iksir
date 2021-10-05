@@ -29,7 +29,6 @@ export default class Play {
     this.projectionMatrix = Matrix.projection(320, 180)
   }
 
-
   draw = (quad: Quad, x: number, y: number, r: number = 0, sx: number = 1, sy: number = 1) => {
 
     this.quads.push(quad)
@@ -37,11 +36,12 @@ export default class Play {
     this.elements.push(
       Rectangle.unit.transform(
         Matrix.unit
-        .scale(quad.tw, quad.th)
-        .scale(sx, sy)
-        .translate(-sx * quad.tw * 0.5, -sy * quad.th * 0.5)
+        .translate(-0.5, -0.5)
+        .scale(quad.w * sx, quad.h * sy)
+        .translate(0.5, 0.5)
+        .translate(-sx * quad.w * 0.5, -sy * quad.h * 0.5)
         .rotate(r)
-        .translate(sx * quad.tw * 0.5, sy * quad.th * 0.5)
+        .translate(sx * quad.w * 0.5, sy * quad.h * 0.5)
         .translate(x, y))
 
     )
@@ -49,6 +49,14 @@ export default class Play {
 
   flush = () => {
     let { gl, attributeBuffer, indexBuffer } = this 
+
+ 
+
+    if (!gl) {
+      return
+    }
+
+
 
     let aIndex = 0
 
@@ -74,8 +82,11 @@ export default class Play {
     gl.viewport(0, 0, 320, 180)
 
     gl.clearColor(0, 0, 0, 1)
-    gl.clear(this.gl.COLOR_BUFFER_BIT)
+    gl.clear(gl.COLOR_BUFFER_BIT)
 
+    gl.enable(gl.BLEND)
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+    
     let vao = gl.createVertexArray()
  
     gl.bindVertexArray(vao)
@@ -143,7 +154,8 @@ export default class Play {
 
     //gl.generateMipmap(gl.TEXTURE_2D)
 
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
 
