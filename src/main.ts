@@ -2,10 +2,12 @@ import Canvas from './canvas';
 import Play from './play';
 
 
-export default function Iksir(element: HTMLElement) {
+export default function Iksir(element: HTMLElement,
+  width: number = 320, 
+  height: number = 180) {
 
 
-  let canvas = Canvas.make(element)
+  let canvas = Canvas.make(element, width, height)
   let play = Play.make(canvas)
 
   return play

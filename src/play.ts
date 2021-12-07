@@ -27,8 +27,16 @@ export default class Play {
   glAttributeBuffer: WebGLBuffer | null = null
   glIndexBuffer: WebGLBuffer | null = null
 
+  get width(): number { 
+    return this.canvas.width
+  }
+  get height(): number {
+    return this.canvas.height
+  }
+
+
   constructor(readonly canvas: Canvas) {
-    this.projectionMatrix = Matrix.projection(320, 180)
+    this.projectionMatrix = Matrix.projection(this.width, this.height)
   }
 
   draw = (quad: Quad, x: number, y: number, r: number = 0, sx: number = 1, sy: number = 1) => {
@@ -55,7 +63,7 @@ export default class Play {
 
     if (!gl) { return }
 
-    gl.viewport(0, 0, 320, 180)
+    gl.viewport(0, 0, this.width, this.height)
     gl.clearColor(0, 0, 0, 1)
 
     gl.enable(gl.BLEND)
@@ -130,6 +138,7 @@ export default class Play {
     }
 
     let aIndex = 0
+    let iIndex = 0
 
     this.elements.forEach((element, i) => {
       let {
@@ -146,10 +155,9 @@ export default class Play {
       }
 
       for (let k = 0; k < indices.length; k++) {
-        indexBuffer[i * indices.length + k] = i * 4 + indices[k]
+        indexBuffer[iIndex++] = i * 4 + indices[k]
       }
     })
-
     gl.clear(gl.COLOR_BUFFER_BIT)
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.glAttributeBuffer)
@@ -159,9 +167,10 @@ export default class Play {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexBuffer, gl.STATIC_DRAW)
 
 
-    gl.drawElements(gl.TRIANGLES, indexBuffer.length, gl.UNSIGNED_SHORT, 0) 
+    gl.drawElements(gl.TRIANGLES, iIndex, gl.UNSIGNED_SHORT, 0) 
 
     this.elements = []
+    this.quads = []
   }
 
 }

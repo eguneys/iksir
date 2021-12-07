@@ -1,19 +1,24 @@
 export default class Canvas {
 
 
-  static make = ($: HTMLElement) => { return new Canvas($) }
+  static make = ($: HTMLElement,
+    width: number,
+    height: number) => { 
+      return new Canvas($, width, height) }
 
 
   $canvas: HTMLCanvasElement
 
   gl?: WebGL2RenderingContext
 
-  constructor(readonly $wrap: HTMLElement) {
+  constructor(readonly $wrap: HTMLElement,
+    readonly width: number, 
+    readonly height: number) {
 
     this.$canvas = document.createElement('canvas')
 
-    this.$canvas.width = 320
-    this.$canvas.height = 180
+    this.$canvas.width = width
+    this.$canvas.height = height
 
     $wrap.appendChild(this.$canvas)
 
