@@ -11,7 +11,7 @@ import Quad from './quad'
 
 export default class Play {
 
-  static maxElements: number = 3200 
+  static maxElements: number = 32000
   static make = (canvas: Canvas) => new Play(canvas)
 
   get gl() { return this.canvas.gl }

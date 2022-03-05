@@ -7,7 +7,7 @@ export default class Rectangle {
   static make = (x: number, y: number,
     w: number, h: number) => new Rectangle([
       Vec2.make(x, y),
-      Vec2.make(x + w, y)
+      Vec2.make(x + w, y),
       Vec2.make(x + w, y + h),
       Vec2.make(x, y + h),
     ])
